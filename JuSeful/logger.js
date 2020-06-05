@@ -19,7 +19,6 @@ function logType(content, type = "log") {
     "color": __color_hex.FgBlack,
     "bg_color": __color_hex.BgWhite,
   }
-  console.log(content)
   content = content.join(' ')
   const utcDate = new Date().toUTCString()
   switch (type) {
