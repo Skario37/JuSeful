@@ -1,4 +1,4 @@
-const __color_console = {
+export const __color_console = {
   "Reset": "\x1b[0m",
 
   "Bright": "\x1b[1m",
@@ -27,7 +27,7 @@ const __color_console = {
   "BgWhite": "\x1b[47m",
 }
 
-const __color_hex = {
+export const __color_hex = {
   "FgBlack": "#000000",
   "FgRed": "#ff0000",
   "FgGreen": "#00ff00",

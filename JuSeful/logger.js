@@ -1,50 +1,112 @@
-function log   (...content)  { this.logType(content, "log")    }
 
-function error (...args)     { this.logType(args, "error")  }
+export function log        (...args)   { logType(args, "log"); }
 
-function warn  (...args)     { this.logType(args, "warn")   }
+export function error      (...args)   { logType(args, "error"); }
 
-function debug (...args)     { this.logType(args, "debug")  }
+export function warn       (...args)   { logType(args, "warn"); }
 
-function cmd   (...args)     { this.logType(args, "cmd")    }
+export function debug      (...args)   { logType(args, "debug"); }
 
-function ready   (...args)     { this.logType(args, "ready")    }
+export function cmd        (...args)   { logType(args, "cmd"); }
+
+export function ready      (...args)   { logType(args, "ready"); }
+
+export function count      (...args)   { logType(args, "count"); }
+
+export function countReset (...args)   { logType(args, "countReset"); }
+
+export function dir        (...args)   { logType(args, "dir"); }
+
+export function dirxml     (...args)   { logType(args, "dirxml"); }
+
+export function group      (...args)   { logType(args, "group"); }
+
+export function groupCollapsed     (...args)   { logType(args, "groupCollapsed"); }
+
+export function groupEnd   (...args)   { logType(args, "groupEnd"); }
+
+export function table      (...args)   { logType(args, "table"); }
+
+export function time       (...args)   { logType(args, "time"); }
+
+export function timeEnd    (...args)   { logType(args, "timeEnd"); }
+
+export function timeLog    (...args)   { logType(args, "timeLog"); }
+
+export function trace      (...args)   { logType(args, "trace"); }
+
+
 
 function logType(content, type = "log") {
-  let cssReset = {
-    "color": __color_hex.FgBlack,
-    "bg_color": __color_hex.BgWhite,
-  }
   let css = {
-    "color": __color_hex.FgBlack,
-    "bg_color": __color_hex.BgWhite,
+    "color": "none",
+    "bg_color": "none",
+  };
+  if (type !== "table") {
+    content.length === 1 ? content = content[0] : content = content.join(' ');
   }
-  content = content.join(' ')
-  const utcDate = new Date().toUTCString()
+  const utcDate = new Date().toUTCString();
   switch (type) {
-    case "log": break // Using default css
-    case "cmd": break // Using default css
-    case "warn": {
-      css.bg_color = __color_hex.BgYellow
-    }
-    break
-    case "error": {
-      css.bg_color = __color_hex.BgRed
-    }
-    break
+    // Using default css or not at all
+    case "log":
+    case "cmd":
+    case "error":
+    case "warn":
+    case "count":
+    case "countReset":
+    case "dir":
+    case "dirxml":
+    case "group":
+    case "groupCollapsed":
+    case "groupEnd":
+    case "table":
+    case "time":
+    case "timeEnd":
+    case "trace":
+      break;
+
+    // Using custom css
     case "debug": {
-      css.color = __color_hex.FgGreen
+      css.color = __color_hex.FgGreen;
     }
-    break
+    break;
     case "ready": {
-      css.bg_color = __color_hex.BgGreen
+      css.bg_color = __color_hex.BgGreen;
     }
-    break
-    default: throw new TypeError("Logger type must be either warn, debug, log, ready, cmd or error.");
+    break;
+    default: throw new TypeError(`Type ${type} is not supported.`);
   }
-  return console.log(
-    `[${utcDate}] %c[${type}]%c : ${content}`,
-    `color:${css.color}; background-color:${css.bg_color};`,
-    `color:${cssReset.color}; background-color:${cssReset.bg_color};`
-  );
+
+  switch (type) {
+    // Non standard methodes
+    case "cmd":
+    case "ready":
+      return console.log(
+        `%c[${utcDate}] [${type}] :`,
+        `color:${css.color}; background-color:${css.bg_color};`,
+        content
+      );
+
+    // Standard methodes
+    case "count":
+    case "countReset":
+    case "dir":
+    case "dirxml":
+    case "table":
+    case "time":
+    case "timeEnd":
+    case "timeLog":
+      return console[type](content);
+    case "group":
+    case "groupCollapsed":
+    case "groupEnd":
+    case "trace":
+      return console[type]();
+    default:
+      return console[type](
+        `%c[${utcDate}] [${type}] :`,
+        `color:${css.color}; background-color:${css.bg_color};`,
+        content
+      );
+  }
 }
